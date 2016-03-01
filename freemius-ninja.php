@@ -82,6 +82,7 @@
 					'slug'    => 'ninja-forms',
 					'account' => false,
 					'support' => false,
+					'contact' => false,
 				),
 			) );
 		}
