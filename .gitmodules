@@ -1,0 +1,4 @@
+[submodule "freemius"]
+	path = freemius
+	url = https://github.com/Freemius/wordpress-sdk.git
+	branch = ninja-forms
