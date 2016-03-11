@@ -129,14 +129,16 @@
 		switch ( $_POST['ninja_action'] ) {
 			case 'upgrade':
 				update_option( 'ninja_forms_version', '3.0' );
-				// Turn Freemius on.
-				update_option( 'ninja_forms_freemius', 1 );
-
 				nf_override_plugin_version();
 
 				if ( ! nf_fs()->is_registered() && nf_fs()->has_api_connectivity() ) {
 					if ( nf_fs()->opt_in() ) {
 						// Successful opt-in into Freemius.
+
+						// Turn Freemius on.
+						update_option( 'ninja_forms_freemius', 1 );
+					}else{
+//						nf_fs()->is_on();
 					}
 				} else if ( nf_fs()->is_registered() ) {
 					// Send immediate re-upgrade event.
@@ -147,14 +149,18 @@
 			case 'downgrade':
 				update_option( 'ninja_forms_version', '2.9' );
 
-				if ( nf_fs()->is_registered() ) {
-					// Send immediate downgrade event.
-					nf_fs()->_run_sync_install();
+				if (nf_is_freemius_on()) {
+					if ( nf_fs()->is_registered() ) {
+						// Send immediate downgrade event.
+						nf_fs()->_run_sync_install();
+					}
 				}
 				break;
 
 			case 'opt_out':
-				nf_fs()->delete_account_event();
+				if (nf_is_freemius_on()) {
+					nf_fs()->delete_account_event();
+				}
 
 				// Turn Freemius off.
 				update_option( 'ninja_forms_freemius', 0 );
